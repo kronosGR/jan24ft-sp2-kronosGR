@@ -4,9 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node index",
-    "dev": "concurrently  \"cd ..\\customer && npm run dev\" \"cd ..\\products && npm run dev\" \"cd ..\\management && npm run dev\"  \"npm start\"",
+    "start": "nodemon index",
+    "dev": "concurrently  \"cd ../customer && npm run dev\" \"cd ../products && npm run dev\" \"cd ../management && npm run dev\"  \"npm start\"",
     "startall": "concurrently  \"cd ..\\customer && npm start\" \"cd ..\\products && npm start\" \"cd ..\\management && npm start\"  \"npm start\""
+  },
+  "nodemonConfig": {
+    "ignore": ["node_modules"]
   },
   "author": "",
   "license": "ISC",
