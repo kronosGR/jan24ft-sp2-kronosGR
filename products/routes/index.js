@@ -19,12 +19,15 @@ router.get('/:id', async function (req, res, next) {
       inner join SalesLT.ProductCategory as c on p.ProductCategoryID  = c.ProductCategoryID  where ProductID='${id}'`
     )
   )[0][0];
-  const date = new Date(product.SellStartDate);
-  product.SellStartDate = `${
-    date.getDate() < 10 ? '0' + date.getDate() : date.getDate()
-  }/${
-    date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1
-  }/${date.getFullYear()}`;
+  if (product) {
+    const date = new Date(product.SellStartDate);
+
+    product.SellStartDate = `${
+      date.getDate() < 10 ? '0' + date.getDate() : date.getDate()
+    }/${
+      date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1
+    }/${date.getFullYear()}`;
+  }
 
   res.render('product', { product: product });
 });
