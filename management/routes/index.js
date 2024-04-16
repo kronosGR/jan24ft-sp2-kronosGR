@@ -38,7 +38,13 @@ router.get('/queryc', async (req, res, next) => {
 });
 
 router.get('/queryd', async (req, res, next) => {
-  let query = [{ Total: 0 }];
+  let query = (
+    await db.sequelize.query(`
+	select DISTINCT  COUNT(soh.CustomerID) as Total  ,soh.OrderDate from SalesLT.SalesOrderHeader soh 
+where soh.OrderDate  BETWEEN CONVERT(datetime,'01/06/2008',103) and  CONVERT(datetime,'15/06/2008',103) GROUP  by soh.OrderDate 
+	`)
+  )[0];
+
   res.render('queryd', { query: query[0] });
 });
 
