@@ -14,7 +14,12 @@ router.get('/querya', async (req, res, next) => {
 });
 
 router.get('/queryb', async (req, res, next) => {
-  let query = [];
+  let query = (
+    await db.sequelize
+      .query(`select pc.Name as Name , AVG(p.ListPrice) as Price  from SalesLT.Product p
+	inner join SalesLT.ProductCategory pc on p.ProductCategoryID =pc.ProductCategoryID
+	group by pc.Name  order by Price DESC `)
+  )[0];
   res.render('queryb', { query: query });
 });
 
