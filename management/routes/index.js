@@ -71,7 +71,13 @@ router.get('/queryf', async (req, res, next) => {
 });
 
 router.get('/queryg', async (req, res, next) => {
-  let query = [];
+  let query = (
+    await db.sequelize.query(`select p.ProductNumber , pm.Name, p.Color
+	from SalesLT.Product p 
+	inner join SalesLT.ProductModel pm on p.ProductModelID = pm.ProductModelID
+	where p.Color is not NULL order by p.ProductNumber 
+	`)
+  )[0];
   res.render('queryg', { query: query });
 });
 
