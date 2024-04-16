@@ -24,7 +24,16 @@ router.get('/queryb', async (req, res, next) => {
 });
 
 router.get('/queryc', async (req, res, next) => {
-  let query = [];
+  let query = (
+    await db.sequelize
+      .query(`select pc.Name, pc.ProductCategoryID, subquery.Price  from SalesLT.ProductCategory pc left join 
+	(select  pc.ParentProductCategoryID , AVG(p.ListPrice) as Price  from SalesLT.Product p
+	inner join SalesLT.ProductCategory pc on p.ProductCategoryID =pc.ProductCategoryID
+	group by pc.ParentProductCategoryID  ) subquery on subquery.ParentProductCategoryID = pc.ProductCategoryID 
+	where subquery.price is not null
+	order by Price`)
+  )[0];
+  console.log(query);
   res.render('queryc', { query: query });
 });
 
