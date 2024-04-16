@@ -60,7 +60,13 @@ select c2.CustomerID , c2.FirstName, c2.LastName  from SalesLT.Customer c2  wher
 });
 
 router.get('/queryf', async (req, res, next) => {
-  let query = [];
+  let query = (
+    await db.sequelize
+      .query(`select c.CustomerID , c.Title ,c.FirstName ,c.MiddleName ,c.LastName ,c.CompanyName, a.City ,a.CountryRegion ,a.StateProvince 
+	from SalesLT.Customer c 
+	inner join SalesLT.CustomerAddress ca on c.CustomerID=ca.CustomerID 
+	INNER join SalesLT.Address a on ca.AddressID =a.AddressID`)
+  )[0];
   res.render('queryf', { query: query });
 });
 
