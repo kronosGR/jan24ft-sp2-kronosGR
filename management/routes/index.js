@@ -82,7 +82,11 @@ router.get('/queryg', async (req, res, next) => {
 });
 
 router.get('/queryh', async (req, res, next) => {
-  let query = [];
+  let query = (
+    await db.sequelize.query(`select p.Name , sod.UnitPrice , sod.OrderQty, sod.LineTotal 
+	from SalesLT.SalesOrderDetail sod 
+	inner join SalesLT.Product p on sod.ProductID = p.ProductID `)
+  )[0];
   res.render('queryh', { query: query });
 });
 
