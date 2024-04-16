@@ -49,7 +49,13 @@ where soh.OrderDate  BETWEEN CONVERT(datetime,'01/06/2008',103) and  CONVERT(dat
 });
 
 router.get('/querye', async (req, res, next) => {
-  let query = [];
+  let query = (
+    await db.sequelize.query(`
+	select c.CustomerID , c.FirstName, c.LastName  from SalesLT.Customer c  where c.FirstName like 'a%'
+UNION 
+select c2.CustomerID , c2.FirstName, c2.LastName  from SalesLT.Customer c2  where c2.LastName like '%e'
+	`)
+  )[0];
   res.render('querye', { query: query });
 });
 
